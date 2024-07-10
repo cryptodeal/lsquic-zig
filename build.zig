@@ -40,7 +40,7 @@ pub fn build(b: *std.Build) void {
     const lib_zlib = zlib.artifact("zlib");
     lib_lsquic.linkLibrary(lib_zlib);
     lib_lsquic.installLibraryHeaders(lib_zlib);
-    lib_lsquic.installHeadersDirectory(b.path("include"), "lsquic", .{});
+    lib_lsquic.installHeadersDirectory(b.path("include"), "", .{});
 
     b.installArtifact(lib_lsquic);
 }
@@ -51,6 +51,8 @@ const qpack_flags = &.{
 };
 
 const lsquic_flags = &.{
+    "-Wno-uninitialized",
+    "-Wno-implicit-fallthrough",
     "-Wall",
     "-Wextra",
     "-Wno-unused-parameter",
@@ -59,7 +61,7 @@ const lsquic_flags = &.{
     "-DNOMINMAX",
     "-D_CRT_SECURE_NO_WARNINGS",
     "-DXXH_HEADER_NAME=\"lsquic_xxhash.h\"",
-    // "-DLSQPACK_ENC_LOGGER_HEADER=\"lsquic_qpack_enc_logger.h\"",
+    "-DLSQPACK_ENC_LOGGER_HEADER=\"lsquic_qpack_enc_logger.h\"",
 };
 
 // from `src/liblsquic/CMakelists.txt`
